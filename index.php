@@ -14,11 +14,11 @@
 <body>
     <section class="">
         <form action="php/validacionLogin.php" method="post">
-            <label id="userlogin">Nombre de Usuario: </label>
+            <label id="userlogin">Nombre de Usuario:</label>
             <input type="input" id="userlogin" name="userlogin" value="<?php if (isset($_SESSION['userlogin'])) echo $_SESSION['userlogin'];?>">
             <br>
             <br>
-            <label for="pwdlogin">Contraseña: </label>
+            <label for="pwdlogin">Contraseña:</label>
             <input type="password" id="pwdlogin" name="pwdlogin" minlength="8"/><br><br>
             <?php if (isset($_GET['loginError'])) {echo "<p style='text-align: center;'>Usuario o contraseña incorrecto.</p><br>"; } ?>
             <?php if (isset($_GET['userloginVacio'])) {echo "<p style='text-align: center;'>No has ingresado el usuario.</p><br>"; } ?>
