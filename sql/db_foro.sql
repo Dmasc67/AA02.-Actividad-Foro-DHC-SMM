@@ -1,9 +1,12 @@
+CREATE DATABASE db_foro;
+USE db_foro;
+
 CREATE TABLE usuarios (
     id_user INT AUTO_INCREMENT PRIMARY KEY,
     user VARCHAR(50) NOT NULL UNIQUE,
     nombre VARCHAR(100) NOT NULL,
     email VARCHAR(100) NOT NULL UNIQUE,
-    password VARCHAR(255) NOT NULL,
+    password VARCHAR(255) NOT NULL
 );
 
 CREATE TABLE preguntas (
@@ -30,20 +33,11 @@ CREATE TABLE amistades (
     id_amistad INT AUTO_INCREMENT PRIMARY KEY,
     id_user INT NOT NULL,
     id_amigo INT NOT NULL,
-    estado_peticion ENUM('pendiente', 'aceptada', 'rechazada') DEFAULT 'pendiente',
+    estado_peticion ENUM('pendiente', 'aceptada', 'rechazada') DEFAULT 'pendiente' COLLATE utf8mb4_general_ci NOT NULL,
     creado_en TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (usuario_id) REFERENCES usuarios(id) ON DELETE CASCADE,
-    FOREIGN KEY (amigo_id) REFERENCES usuarios(id) ON DELETE CASCADE,
-    UNIQUE (usuario_id, amigo_id)
-);
-
-CREATE TABLE solicitudes (
-    id_solicitud INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
-    iduser_1 INT NOT NULL,
-    iduser_2 INT NOT NULL,
-    solicitud_estado enum('pendiente','aceptada', 'rechazada') DEFAULT 'pendiente' COLLATE utf8mb4_general_ci NOT NULL,
-    FOREIGN KEY (iduser_1) REFERENCES usuarios(id_user) ON DELETE CASCADE,
-    FOREIGN KEY (iduser_2) REFERENCES usuarios(id_user) ON DELETE CASCADE,
+    FOREIGN KEY (id_user) REFERENCES usuarios(id_user) ON DELETE CASCADE,
+    FOREIGN KEY (id_amigo) REFERENCES usuarios(id_user) ON DELETE CASCADE,
+    UNIQUE (id_user, id_amigo)
 );
 
 CREATE TABLE mensajes (

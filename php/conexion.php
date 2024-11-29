@@ -4,9 +4,9 @@
     $dbuser = 'root';
     $pwd = '';
 
-    $conn = mysqli_connect($host, $dbuser, $pwd, $dbname);
-
-    if (!$conn) {
-        die("Error de conexión: " .mysqli_connect_error());
+    try {
+        $conn = new PDO("mysql:host=$host;dbname=$dbname;charset=utf8", $dbuser, $pwd);
+    } catch (PDOException $e) {
+        die("Error al conectar a la base de datos: " . $e->getMessage());
     }
 ?>
