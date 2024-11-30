@@ -1,71 +1,67 @@
 <?php 
 session_start();
 if (!isset($_SESSION['inicio'])) {
-    header('Location: php/cerrarSesion.php');
+    header('Location: index.php');
     exit();
 }
 
 require_once 'php/conexion.php';
 
-if (isset($_SESSION['iduserFinal'])) {
-    $mi_id = $_SESSION['iduserFinal'];
+// Manejo de la lógica para crear preguntas
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['crearPregunta'])) {
+    $titulo = $_POST['titulo'] ?? '';
+    $contenido = $_POST['contenido'] ?? '';
 
-    // Usar PDO para la consulta
-    $sql_amigos = "SELECT usuarios.iduser, usuarios.user 
-                   FROM solicitudes 
-                   JOIN usuarios ON (usuarios.iduser = solicitudes.iduser_1 OR usuarios.iduser = solicitudes.iduser_2) 
-                   WHERE (solicitudes.iduser_1 = :mi_id OR solicitudes.iduser_2 = :mi_id) 
-                   AND solicitudes.solicitud_estado = 'aceptada' 
-                   AND usuarios.iduser != :mi_id";
-
-    $stmt = $conn->prepare($sql_amigos); // Preparar la consulta
-    $stmt->bindParam(':mi_id', $mi_id, PDO::PARAM_INT); // Vincular parámetros
-    $stmt->execute(); // Ejecutar la consulta
-    $result_amigos = $stmt->fetchAll(PDO::FETCH_ASSOC); // Obtener resultados
-} else {
-    echo "Error: No se ha encontrado el usuario.";
-    exit();
+    // Validar campos vacíos
+    if (!empty($titulo) && !empty($contenido)) {
+        $sql = "INSERT INTO preguntas (id_user, titulo_pregunta, contenido_pregunta) VALUES (:id_user, :titulo, :contenido)";
+        $stmt = $conn->prepare($sql);
+        $stmt->bindParam(':id_user', $_SESSION['iduserFinal'], PDO::PARAM_INT);
+        $stmt->bindParam(':titulo', $titulo);
+        $stmt->bindParam(':contenido', $contenido);
+        $stmt->execute();
+    }
 }
+
+// Obtener todas las preguntas
+$sql_preguntas = "SELECT preguntas.*, usuarios.user AS autor FROM preguntas JOIN usuarios ON preguntas.id_user = usuarios.id_user ORDER BY creado_en DESC";
+$stmt = $conn->prepare($sql_preguntas);
+$stmt->execute();
+$result_preguntas = $stmt->fetchAll(PDO::FETCH_ASSOC);
 ?>
 <!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Perfil - ChatPro</title>
+    <title>Foro - ChatPro</title>
     <link rel="icon" href="img/Ico Imagotipo.ico" type="image/x-icon">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
 </head>
 <body>
     <div class="container py-5">
-        <!-- Cabecera con cierre de sesión -->
-        <div class="d-flex justify-content-between align-items-center mb-4">
-            <h2>Perfil de <?php if (isset($_SESSION['userFinal'])) echo $_SESSION['userFinal']; ?> - ChatPro</h2>
-            <form action="index.php" method="POST" class="d-inline">
-                <input type="submit" name="logout" class="btn btn-danger" value="Cerrar Sesión">
-            </form>
-        </div>
-
-        <!-- Botón para Búsqueda de Usuarios -->
-        <form action="php/buscarUsuarios.php" method="POST" class="d-inline">
-            <input type="submit" name="buscar" class="btn btn-primary" value="Buscar Usuarios">
-        </form>
-
-        <!-- Botón para Ver Solicitudes de Amistad -->
-        <form action="solicitudes.php" method="POST" class="d-inline">
-            <input type="submit" name="solicitudes" class="btn btn-secondary" value="Ver Solicitudes">
-        </form>
-
-        <!-- Listado de Amigos -->
-        <div class="mt-5">
-            <h4 style="text-align: center">Lista de Amigos</h4>
-            <div id="amistad" name="amistad" class="list-group">
-                <?php foreach ($result_amigos as $amigo) : ?>
-                    <a href="php/chat.php?amigo_id=<?php echo $amigo['iduser']; ?>" class="list-group-item list-group-item-action">
-                        <?php echo htmlspecialchars($amigo['user']); ?>
-                    </a>
-                <?php endforeach; ?>
+        <h2>Bienvenido, <?php echo htmlspecialchars($_SESSION['userlogin']); ?></h2>
+        <form action="" method="POST" class="mb-4">
+            <h4>Crear Nueva Pregunta</h4>
+            <div class="mb-3">
+                <label for="titulo" class="form-label">Título</label>
+                <input type="text" id="titulo" name="titulo" class="form-control" required>
             </div>
+            <div class="mb-3">
+                <label for="contenido" class="form-label">Descripción</label>
+                <textarea id="contenido" name="contenido" class="form-control" rows="3" required></textarea>
+            </div>
+            <button type="submit" name="crearPregunta" class="btn btn-primary">Publicar Pregunta</button>
+        </form>
+
+        <h4>Lista de Preguntas</h4>
+        <div class="list-group">
+            <?php foreach ($result_preguntas as $pregunta) : ?>
+                <a href="verPregunta.php?id=<?php echo $pregunta['id_pregunta']; ?>" class="list-group-item list-group-item-action">
+                    <h5><?php echo htmlspecialchars($pregunta['titulo_pregunta']); ?></h5>
+                    <p>Publicado por: <?php echo htmlspecialchars($pregunta['autor']); ?> el <?php echo $pregunta['creado_en']; ?></p>
+                </a>
+            <?php endforeach; ?>
         </div>
     </div>
 </body>
