@@ -7,14 +7,25 @@ if (!isset($_SESSION['inicio'])) {
 
 require_once 'php/conexion.php';
 
-$mi_id = $_SESSION['iduserFinal'];
-$sql_amigos = "SELECT usuarios.iduser, usuarios.user 
-               FROM solicitudes 
-               JOIN usuarios ON (usuarios.iduser = solicitudes.iduser_1 OR usuarios.iduser = solicitudes.iduser_2) 
-               WHERE (solicitudes.iduser_1 = '$mi_id' OR solicitudes.iduser_2 = '$mi_id') 
-               AND solicitudes.solicitud_estado = 'aceptada' 
-               AND usuarios.iduser != '$mi_id'";
-$result_amigos = mysqli_query($conn, $sql_amigos);
+if (isset($_SESSION['iduserFinal'])) {
+    $mi_id = $_SESSION['iduserFinal'];
+
+    // Usar PDO para la consulta
+    $sql_amigos = "SELECT usuarios.iduser, usuarios.user 
+                   FROM solicitudes 
+                   JOIN usuarios ON (usuarios.iduser = solicitudes.iduser_1 OR usuarios.iduser = solicitudes.iduser_2) 
+                   WHERE (solicitudes.iduser_1 = :mi_id OR solicitudes.iduser_2 = :mi_id) 
+                   AND solicitudes.solicitud_estado = 'aceptada' 
+                   AND usuarios.iduser != :mi_id";
+
+    $stmt = $conn->prepare($sql_amigos); // Preparar la consulta
+    $stmt->bindParam(':mi_id', $mi_id, PDO::PARAM_INT); // Vincular parámetros
+    $stmt->execute(); // Ejecutar la consulta
+    $result_amigos = $stmt->fetchAll(PDO::FETCH_ASSOC); // Obtener resultados
+} else {
+    echo "Error: No se ha encontrado el usuario.";
+    exit();
+}
 ?>
 <!DOCTYPE html>
 <html lang="es">
@@ -49,11 +60,11 @@ $result_amigos = mysqli_query($conn, $sql_amigos);
         <div class="mt-5">
             <h4 style="text-align: center">Lista de Amigos</h4>
             <div id="amistad" name="amistad" class="list-group">
-                <?php while ($amigo = mysqli_fetch_assoc($result_amigos)) : ?>
+                <?php foreach ($result_amigos as $amigo) : ?>
                     <a href="php/chat.php?amigo_id=<?php echo $amigo['iduser']; ?>" class="list-group-item list-group-item-action">
                         <?php echo htmlspecialchars($amigo['user']); ?>
                     </a>
-                <?php endwhile; ?>
+                <?php endforeach; ?>
             </div>
         </div>
     </div>
