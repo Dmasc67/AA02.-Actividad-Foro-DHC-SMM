@@ -112,7 +112,7 @@ input[type="submit"]:active {
     }
 
     .logo {
-        max-width: 150px; /* Ajustar el tamaño máximo del logo para móviles */
+        max-width: 70px; /* Ajustar el tamaño máximo del logo para móviles */
         height: auto;
         margin: 0 auto; /* Asegurarse de que esté centrado */
     }
