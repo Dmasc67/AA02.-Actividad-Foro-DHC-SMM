@@ -1,4 +1,3 @@
-/* Reset de estilos */
 * {
     margin: 0;
     padding: 0;
@@ -77,6 +76,7 @@ input[type="submit"] {
     cursor: pointer;
     transition: background-color 0.3s ease, transform 0.2s ease;
     margin-top: 1rem;
+    font-weight: bold;
 }
 
 input[type="submit"]:hover {
@@ -128,10 +128,12 @@ input[type="submit"]:active {
     }
 
     input[type="text"],
+    input[type="email"],
     input[type="password"] {
         padding: 0.7rem; /* Reducir el padding para mejor ajuste en pantallas pequeñas */
         font-size: 0.95rem;
         width: 100%; /* Garantizar que no haya desbordamiento horizontal */
+        text-align: center;
     }
 
     input[type="submit"] {

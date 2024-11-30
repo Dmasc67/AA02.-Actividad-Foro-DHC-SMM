@@ -1,0 +1,136 @@
+* {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body, html {
+    margin: 0;
+    padding: 0;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #f3f4f6; /* Fondo claro */
+}
+
+/* Contenedor del formulario de inicio de sesión */
+.form-container {
+    background-color: #ffffff; /* Fondo blanco */
+    padding: 2rem;
+    width: 90%;
+    max-width: 400px;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2); /* Sombra del primer bloque */
+    border-radius: 10px; /* Bordes redondeados */
+    text-align: center;
+}
+
+/* Título y etiqueta del formulario */
+.form-container label {
+    display: block;
+    font-size: 1rem;
+    color: #333; /* Texto oscuro del primer bloque */
+    margin-bottom: 0.5rem;
+    text-align: left;
+}
+
+/* Campos de entrada de texto y contraseña */
+.form-container input[type="text"],
+.form-container input[type="password"] {
+    width: calc(100% - 1rem);
+    padding: 0.75rem;
+    margin-bottom: 1rem;
+    border: 1px solid #ddd; /* Borde claro del primer bloque */
+    font-size: 1rem;
+    box-sizing: border-box;
+    border-radius: 6px; /* Bordes del primer bloque */
+    transition: all 0.3s ease-in-out; /* Transiciones suaves */
+}
+
+.form-container input[type="text"]:focus,
+.form-container input[type="password"]:focus {
+    border-color: #0984e3; /* Azul de enfoque del primer bloque */
+    box-shadow: 0 0 8px rgba(9, 132, 227, 0.6); /* Sombra azul de enfoque */
+    outline: none;
+}
+
+/* Estilo del mensaje de error */
+.form-container p {
+    color: #0984e3; /* Azul error del primer bloque */
+    text-align: center;
+    margin: 0.5rem 0;
+    font-weight: bold;
+}
+
+/* Botón de inicio de sesión */
+.form-container input[type="submit"] {
+    width: 100%;
+    padding: 0.75rem;
+    background-color: #0984e3; /* Azul fuerte del primer bloque */
+    color: #fff; /* Texto blanco */
+    border: none;
+    font-size: 1rem;
+    cursor: pointer;
+    font-weight: bold;
+    box-sizing: border-box;
+    border-radius: 6px; /* Bordes redondeados del primer bloque */
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+/* Efecto hover en el botón de inicio de sesión */
+.form-container input[type="submit"]:hover {
+    background-color: #74b9ff; /* Azul claro del primer bloque */
+}
+
+.form-container input[type="submit"]:active {
+    transform: scale(0.98);
+}
+
+/* Estilo del enlace de registro */
+.form-container a.link {
+    display: block;
+    margin-top: 1rem;
+    font-size: 0.9rem;
+    color: #0984e3; /* Azul para enlaces del primer bloque */
+    text-decoration: none;
+    font-weight: bold;
+    transition: color 0.3s ease;
+}
+
+/* Efecto hover en el enlace de registro */
+.form-container a.link:hover {
+    color: #74b9ff; /* Azul más claro del primer bloque */
+}
+
+.logo-container {
+    margin-bottom: 1.5rem;
+}
+
+.logo {
+    max-width: 70px;
+    height: auto;
+    margin: 0 auto;
+}
+
+@media (max-width: 768px) {
+    body, html {
+        padding: 1rem;
+    }
+    .form-container {
+        width: 100%;
+        padding: 2rem;
+        background-color: #0985e3b9;
+    }
+    .form-container input[type="submit"] {
+        background-color: #ffffff;
+        color: #0984e3;
+    }
+    .form-container p {
+        color: #ffffff;
+    }
+    .form-container label {
+        color: #ffffff;
+    }
+    .form-container input[type="text"],
+    .form-container input[type="password"] {
+        text-align: center;
+    }
+}
