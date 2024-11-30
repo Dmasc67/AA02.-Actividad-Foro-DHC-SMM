@@ -19,19 +19,16 @@ $email = isset($_POST['email']) ? trim($_POST['email']) : '';
 $password = isset($_POST['pwd']) ? trim($_POST['pwd']) : '';
 $passwordRepeat = isset($_POST['pwdRepeat']) ? trim($_POST['pwdRepeat']) : '';
 
-// Saneamiento básico
 $user = htmlspecialchars($user, ENT_QUOTES, 'UTF-8');
 $nombreCompleto = htmlspecialchars($nombreCompleto, ENT_QUOTES, 'UTF-8');
 $email = htmlspecialchars($email, ENT_QUOTES, 'UTF-8');
 $password = htmlspecialchars($password, ENT_QUOTES, 'UTF-8');
 $passwordRepeat = htmlspecialchars($passwordRepeat, ENT_QUOTES, 'UTF-8');
 
-// Guardar valores en la sesión
 $_SESSION['user'] = $user;
 $_SESSION['nombre'] = $nombreCompleto;
 $_SESSION['email'] = $email;
 
-// Validación de datos de entrada
 if (empty($user)) {
     header("Location: ../registro.php?userVacio");
     exit();
@@ -71,7 +68,7 @@ try {
     } else {
         $hashedPassword = password_hash($password, PASSWORD_BCRYPT);
 
-        $sql_insert = "INSERT INTO usuarios (user, nombre, email, pwd) VALUES (:user, :nombre, :email, :pwd)";
+        $sql_insert = "INSERT INTO usuarios (user, nombre, email, password) VALUES (:user, :nombre, :email, :pwd)";
         $stmt = $conn->prepare($sql_insert);
         $stmt->bindParam(':user', $user, PDO::PARAM_STR);
         $stmt->bindParam(':nombre', $nombreCompleto, PDO::PARAM_STR);
@@ -79,15 +76,24 @@ try {
         $stmt->bindParam(':pwd', $hashedPassword, PDO::PARAM_STR);
 
         if ($stmt->execute()) {
-            header("Location: ../perfil.php");
+            header("Location: ../index.php");
             exit();
         } else {
-            header("Location: ../registro.php?error=insertFail");
+            // Error al insertar
+            header("Location: ../registro.php?insertFail");
             exit();
         }
     }
 } catch (PDOException $e) {
-    error_log("Error en la base de datos: " . $e->getMessage());
-    header("Location: ../registro.php?error=dbError");
-    exit();
+    // Capturar cualquier otro error en la base de datos
+    if (strpos($e->getMessage(), 'Duplicate entry') !== false) {
+        error_log("Error de duplicado: " . $e->getMessage());
+        header("Location: ../registro.php?existe");
+        exit();
+    } else {
+        error_log("Error en la base de datos: " . $e->getMessage());
+        echo "Error en la base de datos: " . $e->getMessage(); // Solo para pruebas
+        header("Location: ../registro.php?dbError");
+        exit();
+    }
 }

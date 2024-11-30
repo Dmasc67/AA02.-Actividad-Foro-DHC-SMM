@@ -1,6 +1,6 @@
 <?php
     $host = '127.0.0.1';
-    $dbname = 'db_chat';
+    $dbname = 'db_foro';
     $dbuser = 'root';
     $pwd = '';
 
