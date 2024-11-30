@@ -31,6 +31,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $user = $stmt->fetch(PDO::FETCH_ASSOC);
         if (password_verify($pwdlogin, $user['password'])) {
             $_SESSION['inicio'] = true;
+            $_SESSION['iduserFinal'] = $user['id_user']; // Asegúrate de que este campo exista
             $_SESSION['userlogin'] = $userlogin;
             header('Location: perfil.php');
             exit();
@@ -74,8 +75,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         </form>
     </div>
     <?php
-        // session_unset();
-        // session_destroy();
+        session_unset();
+        session_destroy();
     ?>
 </body>
 </html>

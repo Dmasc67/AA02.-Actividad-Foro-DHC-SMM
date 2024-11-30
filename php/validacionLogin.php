@@ -28,6 +28,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         // Verificar la contraseña
         if (password_verify($pwdlogin, $user['password'])) {
             $_SESSION['inicio'] = true;
+            $_SESSION['iduserFinal'] = $user['id_user']; // Almacena el ID del usuario
             $_SESSION['userlogin'] = $userlogin;
             header('Location: ../perfil.php'); // Ajusta la ruta según la ubicación real de perfil.php
             exit();
