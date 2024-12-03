@@ -53,11 +53,10 @@ body, html {
 }
 
 /* Estilo del mensaje de error */
-.form-container p {
-    color: #0984e3; /* Azul error del primer bloque */
-    text-align: center;
-    margin: 0.5rem 0;
-    font-weight: bold;
+.error-message {
+    color: #d63031;
+    font-size: 0.9rem;
+    margin-top: 0.5rem;
 }
 
 /* Botón de inicio de sesión */

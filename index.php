@@ -23,9 +23,9 @@
             <br>
             <label for="pwdlogin">Contraseña:</label>
             <input type="password" id="pwdlogin" name="pwdlogin" minlength="8"/><br><br>
-            <?php if (isset($_GET['loginError'])) {echo "<p style='text-align: center;'>Usuario o contraseña incorrecto.</p><br>"; } ?>
-            <?php if (isset($_GET['userloginVacio'])) {echo "<p style='text-align: center;'>No has ingresado el usuario.</p><br>"; } ?>
-            <?php if (isset($_GET['pwdloginVacio'])) {echo "<p style='text-align: center;'>No has ingresado la contrasña.</p><br>"; } ?>
+            <?php if (isset($_GET['loginError'])) {echo '<p class="error-message">Usuario o contraseña incorrecto.</p><br>'; } ?>
+            <?php if (isset($_GET['userloginVacio'])) {echo '<p class="error-message">No has ingresado el usuario.</p><br>'; } ?>
+            <?php if (isset($_GET['pwdloginVacio'])) {echo '<p class="error-message">No has ingresado la contrasña.</p><br>'; } ?>
             <input type="submit" name="inicio" value="Iniciar sesión">
             <a class="link" href="registro.php">
                 <p>¡Registrate Gratis!</p>
