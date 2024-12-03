@@ -44,7 +44,7 @@ CREATE TABLE mensajes (
     id_message INT AUTO_INCREMENT PRIMARY KEY,
     id_enviar INT NOT NULL,
     id_recibir INT NOT NULL,
-    contenido_mensaje varchar(500) COLLATE utf8mb4_general_ci DEFAULT NULL,
+    contenido_mensaje varchar(500) COLLATE utf8mb4_general_ci DEFAULT NOT NULL,
     creado_en TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (id_enviar) REFERENCES usuarios(id_user) ON DELETE CASCADE,
     FOREIGN KEY (id_recibir) REFERENCES usuarios(id_user) ON DELETE CASCADE
